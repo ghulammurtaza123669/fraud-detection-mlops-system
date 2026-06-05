@@ -1,0 +1,14 @@
+artifact_uri: file:C:/Users/lenovo/Documents/Codex/2026-05-31/files-mentioned-by-the-user-project/mlruns/853851708430967125/fbe761f111c74a5c9a4557c7a7e7ddbf/artifacts
+end_time: 1780514602280
+entry_point_name: ''
+experiment_id: '853851708430967125'
+lifecycle_stage: active
+run_id: fbe761f111c74a5c9a4557c7a7e7ddbf
+run_name: random-forest-fraud-detector
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1780514597604
+status: 3
+tags: []
+user_id: lenovo

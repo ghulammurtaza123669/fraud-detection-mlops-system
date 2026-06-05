@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fraud Detection MLOps Command Center</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav">
+        <div class="brand">
+          <span class="brand-mark">FD</span>
+          <div>
+            <strong>FraudGuard MLOps</strong>
+            <small>Real-time risk intelligence</small>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <a href="/docs" target="_blank" rel="noreferrer">Swagger API</a>
+          <a href="/metrics" target="_blank" rel="noreferrer">Prometheus Metrics</a>
+          <button id="refresh-health" type="button">Refresh Status</button>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Production MLOps Command Center</p>
+          <h1>Real-Time Fraud Detection System</h1>
+          <p class="hero-text">
+            FastAPI scoring, Random Forest training, MLflow experiment tracking, CI/CD,
+            infrastructure as code, and observability in one production-style project.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#scoring">Run Live Prediction</a>
+            <a href="#operations">View MLOps Phases</a>
+          </div>
+        </div>
+
+        <div class="ops-board" aria-label="MLOps workflow">
+          <div class="ops-node active">FastAPI</div>
+          <div class="ops-node">Random Forest</div>
+          <div class="ops-node">MLflow</div>
+          <div class="ops-node">Docker</div>
+          <div class="ops-node">Kubernetes</div>
+          <div class="ops-node">Terraform</div>
+          <div class="ops-node">Jenkins</div>
+          <div class="ops-node">Grafana</div>
+        </div>
+      </section>
+    </header>
+
+    <main class="shell">
+      <section class="status-grid" aria-label="System status">
+        <article class="metric-tile">
+          <span class="label">API status</span>
+          <strong id="health-status">Checking</strong>
+          <small>Health endpoint</small>
+        </article>
+        <article class="metric-tile">
+          <span class="label">Model loaded</span>
+          <strong id="model-loaded">Checking</strong>
+          <small>Serialized model</small>
+        </article>
+        <article class="metric-tile wide">
+          <span class="label">Model version</span>
+          <strong id="model-version">Pending</strong>
+          <small>MLflow run id</small>
+        </article>
+        <article class="metric-tile">
+          <span class="label">Last probability</span>
+          <strong id="last-probability">--</strong>
+          <small>Latest request</small>
+        </article>
+      </section>
+
+      <section id="scoring" class="workspace">
+        <form id="predict-form" class="panel form-panel" autocomplete="off">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Single Transaction</p>
+              <h2>Live Fraud Scoring</h2>
+            </div>
+            <button type="button" id="load-risky">Load High-Risk Sample</button>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Transaction ID
+              <input name="transaction_id" value="txn_001" required />
+            </label>
+            <label>
+              Type
+              <select name="transaction_type">
+                <option>TRANSFER</option>
+                <option>CASH_OUT</option>
+                <option>PAYMENT</option>
+                <option>CASH_IN</option>
+                <option>DEBIT</option>
+              </select>
+            </label>
+            <label>
+              Amount
+              <input name="amount" type="number" min="0" step="0.01" value="9800" required />
+            </label>
+            <label>
+              Hour
+              <input name="hour" type="number" min="0" max="23" step="1" value="2" required />
+            </label>
+            <label>
+              Old Origin Balance
+              <input name="oldbalance_org" type="number" min="0" step="0.01" value="9800" required />
+            </label>
+            <label>
+              New Origin Balance
+              <input name="newbalance_orig" type="number" min="0" step="0.01" value="0" required />
+            </label>
+            <label>
+              Old Destination Balance
+              <input name="oldbalance_dest" type="number" min="0" step="0.01" value="120" required />
+            </label>
+            <label>
+              New Destination Balance
+              <input name="newbalance_dest" type="number" min="0" step="0.01" value="9920" required />
+            </label>
+          </div>
+
+          <button class="primary" type="submit">Run Prediction</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Prediction Output</p>
+              <h2 id="result-title">Awaiting Transaction</h2>
+            </div>
+            <span id="risk-badge" class="badge neutral">Ready</span>
+          </div>
+
+          <div class="risk-meter">
+            <div class="meter-labels">
+              <span>Low</span>
+              <span>Fraud Risk</span>
+              <span>High</span>
+            </div>
+            <div class="gauge" aria-hidden="true">
+              <div id="gauge-fill"></div>
+            </div>
+          </div>
+
+          <dl class="result-grid">
+            <div>
+              <dt>Prediction</dt>
+              <dd id="prediction-value">--</dd>
+            </div>
+            <div>
+              <dt>Fraud Probability</dt>
+              <dd id="probability-value">--</dd>
+            </div>
+            <div>
+              <dt>Confidence</dt>
+              <dd id="confidence-value">--</dd>
+            </div>
+            <div>
+              <dt>Model Version</dt>
+              <dd id="response-version">--</dd>
+            </div>
+          </dl>
+          <pre id="raw-response">{}</pre>
+        </section>
+      </section>
+
+      <section class="lower-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Batch Endpoint</p>
+              <h2>Batch Prediction</h2>
+            </div>
+            <button type="button" id="run-batch">Run Batch</button>
+          </div>
+          <textarea id="batch-json" spellcheck="false">{
+  "transactions": [
+    {
+      "transaction_id": "txn_batch_001",
+      "amount": 9800,
+      "oldbalance_org": 9800,
+      "newbalance_orig": 0,
+      "oldbalance_dest": 120,
+      "newbalance_dest": 9920,
+      "transaction_type": "TRANSFER",
+      "hour": 2
+    },
+    {
+      "transaction_id": "txn_batch_002",
+      "amount": 240,
+      "oldbalance_org": 5000,
+      "newbalance_orig": 4760,
+      "oldbalance_dest": 300,
+      "newbalance_dest": 540,
+      "transaction_type": "PAYMENT",
+      "hour": 13
+    }
+  ]
+}</textarea>
+          <pre id="batch-output">{}</pre>
+        </section>
+
+        <section id="operations" class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Delivery Phases</p>
+              <h2>MLOps Coverage</h2>
+            </div>
+          </div>
+          <ul class="phase-list">
+            <li><span>ML</span> Data validation, features, Random Forest training</li>
+            <li><span>Track</span> MLflow metrics, parameters, artifacts, versioning</li>
+            <li><span>API</span> FastAPI health, predict, batch, metrics, Swagger</li>
+            <li><span>QA</span> Unit, integration, API, and model tests</li>
+            <li><span>CI/CD</span> Jenkins lint, test, build, Docker, deploy stages</li>
+            <li><span>Ops</span> Prometheus metrics and Grafana dashboard</li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="tool-grid" aria-label="DevOps dashboards">
+        <article class="tool-card">
+          <p class="eyebrow">CI/CD</p>
+          <h3>Jenkins Pipeline</h3>
+          <p>Lint, tests, model build, Docker build, optional push, Kubernetes deploy, and rollout verification.</p>
+          <div class="pipeline">
+            <span>Lint</span><span>Test</span><span>Build</span><span>Deploy</span>
+          </div>
+        </article>
+        <article class="tool-card">
+          <p class="eyebrow">Monitoring</p>
+          <h3>Grafana Dashboard</h3>
+          <p>Request count, API latency, error count, prediction volume, CPU, memory, and container health.</p>
+          <div class="mini-chart"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="tool-card">
+          <p class="eyebrow">Metrics</p>
+          <h3>Prometheus</h3>
+          <p>Scrapes `/metrics` from the FastAPI service for operational visibility and alert readiness.</p>
+          <code>fraud_api_requests_total</code>
+        </article>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

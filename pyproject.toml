@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "real-time-fraud-detection-mlops"
+version = "1.0.0"
+description = "Production-ready real-time fraud detection system with FastAPI, MLflow, Docker, Kubernetes, Terraform, Jenkins, Prometheus, and Grafana."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic",
+  "pydantic-settings",
+  "pandas",
+  "numpy",
+  "scikit-learn",
+  "joblib",
+  "mlflow",
+  "prometheus-client",
+  "python-dotenv",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends"]

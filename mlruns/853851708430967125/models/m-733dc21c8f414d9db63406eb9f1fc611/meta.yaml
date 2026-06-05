@@ -1,0 +1,10 @@
+artifact_location: file:C:/Users/lenovo/Documents/Codex/2026-05-31/files-mentioned-by-the-user-project/mlruns/853851708430967125/models/m-733dc21c8f414d9db63406eb9f1fc611/artifacts
+creation_timestamp: 1780425313721
+experiment_id: '853851708430967125'
+last_updated_timestamp: 1780425316527
+model_id: m-733dc21c8f414d9db63406eb9f1fc611
+model_type: null
+name: model
+source_run_id: d40a211f978042ff8301c00fb050d24d
+status: 2
+status_message: null

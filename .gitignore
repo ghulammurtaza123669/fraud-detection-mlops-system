@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.env
+*.log
+pip-temp/
+mlruns/**/artifacts/
+*.sqlite
+*.db
+.DS_Store

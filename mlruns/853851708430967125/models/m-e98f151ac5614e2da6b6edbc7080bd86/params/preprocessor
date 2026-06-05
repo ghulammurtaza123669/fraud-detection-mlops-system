@@ -1,0 +1,9 @@
+ColumnTransformer(transformers=[('numeric', StandardScaler(),
+                                 ['amount', 'oldbalance_org', 'newbalance_orig',
+                                  'oldbalance_dest', 'newbalance_dest', 'hour',
+                                  'origin_balance_delta', 'dest_balance_delta',
+                                  'amount_to_origin_balance',
+                                  'amount_to_dest_balance']),
+                                ('categorical',
+                                 OneHotEncoder(handle_unknown='ignore'),
+                                 ['transaction_type'])])
