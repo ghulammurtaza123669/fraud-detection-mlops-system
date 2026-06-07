@@ -50,3 +50,7 @@ kubectl apply -f infra/kubernetes/
 ```
 
 See the `docs/` folder for architecture, deployment, API, workflow, and troubleshooting details.
+
+## Graphs
+
+Visible model and monitoring graph evidence is documented in `docs/Graphs.md`.

@@ -253,7 +253,7 @@ dt {
 }
 
 .tool-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .panel,
@@ -433,6 +433,40 @@ pre {
 .tool-card p {
   color: var(--muted);
   line-height: 1.55;
+}
+
+.metric-chart {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.metric-chart div {
+  display: grid;
+  grid-template-columns: 96px 1fr 62px;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.metric-chart div::before {
+  content: "";
+  grid-column: 2;
+  height: 13px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--brand) var(--value), #e7edf5 var(--value));
+}
+
+.metric-chart span {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.metric-chart strong {
+  grid-column: 3;
+  grid-row: 1;
+  color: var(--ink);
 }
 
 .pipeline {
